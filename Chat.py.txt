@@ -1,0 +1,122 @@
+from kivy.lang import Builder
+from kivy.uix.boxlayout import BoxLayout
+from kivy.clock import Clock
+from kivymd.app import MDApp
+from kivymd.uix.textfield import MDTextField
+from kivymd.uix.button import MDFlatButton
+from kivymd.uix.label import MDLabel
+import requests
+import json
+import pyttsx3
+import threading
+
+# Load KivyMD design string
+kv_string = '''
+BoxLayout:
+    orientation: 'vertical'
+    padding: dp(20)
+
+    ScrollView:
+        MDList:
+            id: chat_container
+
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint_y: None
+        height: self.minimum_height
+
+        MDTextField:
+            id: prompt_field
+            hint_text: "Type your message"
+            mode: "fill"
+            fill_color: app.theme_cls.primary_color
+            hint_text_color: [1, 1, 1, 0.7]
+            on_text_validate: app.send_message()
+
+        MDFlatButton:
+            text: "Send"
+            on_press: app.send_message()
+'''
+
+class ChatApp(MDApp):
+    def build(self):
+        self.theme_cls.theme_style = "Dark"
+        self.title = "Ollama Chatbot"
+        return Builder.load_string(kv_string)
+
+    def send_message(self):
+        user_input = self.root.ids.prompt_field.text
+
+        # Display user message in chat interface
+        self.add_message("You", user_input)
+
+        # Start a new thread for AI communication
+        threading.Thread(target=self.communicate_with_ai, args=(user_input,)).start()
+
+    def communicate_with_ai(self, user_input):
+        # Define the endpoint URL
+        url = "http://localhost:11434/api/chat"
+
+        # Define the payload (data) to be sent in the request
+        data = {
+            "model": "llama2-uncensored",
+            "messages": [
+                {"role": "user", "content": user_input}
+            ]
+        }
+
+        # Send the POST request to the API endpoint with streaming enabled
+        response = requests.post(url, json=data, stream=True)
+
+        # Initialize response data
+        response_data = ""
+
+        # Iterate over the streaming response
+        for line in response.iter_lines():
+            if line:
+                # Parse the JSON line
+                json_line = json.loads(line)
+                # Extract the assistant's response
+                assistant_response = json_line['message']['content']
+
+                # Ensure the assistant's response is properly formatted
+                assistant_response = assistant_response.strip()
+
+                response_data += assistant_response + " "
+
+                # Check if it's the final response
+                if json_line.get("done"):
+                    break
+
+        # Schedule the UI update in the main thread
+        Clock.schedule_once(lambda dt: self.add_message("AI", response_data.strip()))
+
+        # Convert the assistant's response to speech
+        text_to_speech(response_data.strip())
+
+    def add_message(self, sender, message):
+        # Create MDLabel widget
+        label = MDLabel(text=f"[b]{sender}[/b]: {message}", markup=True)
+        label.theme_text_color = "Custom"
+        label.text_color = (1, 1, 1, 1)  # White text color
+        label.size_hint_y = None
+        label.height = label.texture_size[1] + 20
+
+        # Add the MDLabel to the chat container
+        chat_container = self.root.ids.chat_container
+        chat_container.add_widget(label)
+
+        # Scroll to the bottom of the chat container
+        chat_container.parent.scroll_y = 0
+
+def text_to_speech(text):
+    # Initialize the TTS engine
+    engine = pyttsx3.init()
+    # Convert text to speech
+    engine.say(text)
+
+    # Wait for the speech to finish
+    engine.runAndWait()
+
+if __name__ == "__main__":
+    ChatApp().run()
