@@ -1,0 +1,4 @@
+Kivy==2.0.0
+KivyMD==0.104.2
+requests==2.26.0
+pyttsx3==2.90

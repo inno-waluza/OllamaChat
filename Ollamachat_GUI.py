@@ -1,10 +1,7 @@
 import threading
 from kivy.clock import Clock
 from kivy.lang import Builder
-from kivy.uix.boxlayout import BoxLayout
 from kivymd.app import MDApp
-from kivymd.uix.textfield import MDTextField
-from kivymd.uix.button import MDFlatButton
 import requests
 import json
 import pyttsx3
