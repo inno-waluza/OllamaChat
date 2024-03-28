@@ -63,7 +63,7 @@ These models can be installed locally on a machine capable of running AI models.
 
 ## Contributors
 
-- [Innocent Waluza](https://github.com/innowaluza)
+- [Innocent Waluza](https://github.com/inno-waluza)
 
 ## License
 
