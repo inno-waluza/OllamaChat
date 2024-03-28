@@ -1,70 +1,24 @@
-# Ollama Chatbot
+# OllamaChat
 
-Ollama Chatbot is a conversational agent powered by AI that allows users to interact with an AI assistant through either a graphical user interface (GUI) or a console interface.
+OllamaChat is a Python-based graphical user interface (GUI) powered by KivyMD. It facilitates interaction with AI language models such as llama2 and llama2-uncensored, enabling local hosting on users' machines.
 
 ## Features
 
-- **Graphical User Interface (GUI):** Provides a user-friendly interface for interacting with the AI assistant.
-- **Console Interface:** Allows interaction with the AI assistant through the command line interface.
-
-## AI Models
-
-The AI models used in this chatbot are provided by Mistral AI or Ollama AI. The available models are:
-
-- **Llama2:** A pre-trained AI model for conversation.
-- **Llama2-Uncensored:** A variant of the Llama2 model without content filtering.
-
-These models can be installed locally on a machine capable of running AI models.
-
-## Requirements
-
-- Python 3.x
-- Required Python libraries:
-  - Kivy
-  - KivyMD
-  - Requests
-  - Pyttsx3
-
-## Installation
-
-1. Clone the repository:
-
-    ```bash
-    git clone https://github.com/innowaluza/ollama-chatbot.git
-    ```
-
-2. Install the required Python libraries:
-
-    ```bash
-    pip install -r requirements.txt
-    ```
+- **User-Friendly Interface**: Enjoy a sleek and intuitive GUI to interact seamlessly with AI models.
+- **Local Hosting**: Host llama2 and llama2-uncensored models directly on your machine.
+- **Easy Installation**: Effortlessly install Ollama for Windows.
 
 ## Usage
 
-### Graphical User Interface (GUI)
+1. Launch the application.
+2. Select your desired AI model (llama2 or llama2-uncensored).
+3. Start interacting with the model through the user-friendly GUI.
 
-1. Run the `Ollamachat_GUI.py` script:
+## Installation
 
-    ```bash
-    python Ollamachat_GUI.py
-    ```
+To begin using OllamaChat:
 
-2. Type your message in the input field and press "Send" to receive responses from the AI assistant.
-
-### Console Interface
-
-1. Run the `Ollamachat_console.py` script:
-
-    ```bash
-    python Ollamachat_console.py
-    ```
-
-2. Type your message in the console and press Enter to send it to the AI assistant. Type "exit" to end the conversation.
-
-## Contributors
-
-- [Innocent Waluza](https://github.com/innowaluza)
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).
+1. Install Ollama for Windows from [here](https://ollama.com/).
+2. Clone this repository:
+   ```bash
+   git clone https://github.com/inno-waluza/OllamaChat.git
