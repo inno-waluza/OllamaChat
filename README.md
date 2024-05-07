@@ -20,10 +20,17 @@ These models can be installed locally on a machine capable of running AI models.
 
 - Python 3.x
 - Required Python libraries:
-  - Kivy
-  - KivyMD
-  - Requests
-  - Pyttsx3
+  - Kivy==2.0.0
+  - kivy-deps.angle==0.3.3
+  - kivy-deps.glew==0.3.1
+  - kivy-deps.sdl2==0.3.1
+  - Kivy-Garden==0.1.5
+  - kivymd==0.104.2
+  - PySide6==6.7.0
+  - PySide6_Addons==6.7.0
+  - PySide6_Essentials==6.7.0
+  - pyttsx3==2.90
+  - requests==2.26.0
 
 ## Installation
 
@@ -64,6 +71,7 @@ These models can be installed locally on a machine capable of running AI models.
 ## Contributors
 
 - [Innocent Waluza](https://github.com/inno-waluza)
+- [Krafi](https://gitlab.com/krafi)
 
 ## License
 
