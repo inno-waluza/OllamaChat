@@ -12,30 +12,40 @@ BoxLayout:
   orientation: 'vertical'
   padding: dp(20)
 
-  BoxLayout:
-    orientation: 'horizontal'
-    size_hint_y: None
-    height: self.minimum_height
+  ScrollView:
+    BoxLayout:
+      orientation: 'vertical'
+      size_hint_y: None
+      height: self.minimum_height
 
-    MDTextField:
-      id: prompt_field
-      hint_text: "Type your message"
-      mode: "fill"
-      fill_color: app.theme_cls.primary_color
-      hint_text_color: [1, 1, 1, 0.7]
-      on_text_validate: app.send_message()
+      BoxLayout:
+        orientation: 'horizontal'
+        size_hint_y: None
+        height: self.minimum_height
+        spacing: dp(10)
 
-    MDFlatButton:
-      text: "Send"
-      on_press: app.send_message()
+        MDTextField:
+          id: prompt_field
+          hint_text: "Type your message"
+          mode: "fill"
+          fill_color: app.theme_cls.primary_color
+          hint_text_color: [1, 1, 1, 0.7]
+          on_text_validate: app.send_message()
 
-  MDTextField:
-    id: response_field
-    hint_text: "AI Response"
-    mode: "fill"
-    fill_color: app.theme_cls.primary_color
-    hint_text_color: [1, 1, 1, 0.7]
-    readonly: True
+        MDFlatButton:
+          text: "Send"
+          on_press: app.send_message()
+
+      MDTextField:
+        id: response_field
+        hint_text: "AI Response"
+        mode: "fill"
+        fill_color: app.theme_cls.primary_color
+        hint_text_color: [1, 1, 1, 0.7]
+        readonly: True
+        multiline: True  # Allow multiline for longer responses
+        size_hint_y: None
+        height: self.minimum_height  # Ensure it grows to fit content
 '''
 
 class ChatApp(MDApp):
@@ -85,4 +95,3 @@ class ChatApp(MDApp):
 
 if __name__ == "__main__":
   ChatApp().run()
-classcls

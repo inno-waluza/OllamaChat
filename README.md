@@ -7,6 +7,17 @@ Ollama Chatbot is a conversational agent powered by AI that allows users to inte
 - **Graphical User Interface (GUI):** Provides a user-friendly interface for interacting with the AI assistant.
 - **Console Interface:** Allows interaction with the AI assistant through the command line interface.
 
+## Screenshots
+
+### Graphical User Interface (GUI)
+
+![GUI](/assets/GUI.png)
+
+### Console Interface
+
+![Console](/assets/console.png)
+
+
 ## AI Models
 
 The AI models used in this chatbot are provided by Mistral AI or Ollama AI. The available models are:
