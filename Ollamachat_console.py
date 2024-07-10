@@ -4,65 +4,56 @@ import pyttsx3
 
 def send_message(message):
     # Define the endpoint URL
-    url = "http://localhost:11434/api/chat"
+    url = "http://localhost:11434/api/generate"
 
     # Define the payload (data) to be sent in the request
     data = {
-        "model": "llama2-uncensored",
-        "messages": [
-            {"role": "user", "content": message}
-        ]
+        "model": "llama2",
+        "prompt": message,
+        "stream": False
     }
 
-    # Send the POST request to the API endpoint with streaming enabled
-    response = requests.post(url, json=data, stream=True)
+    # Send the POST request to the API endpoint
+    response = requests.post(url, json=data)
 
-    # Initialize response data
-    response_data = ""
+    # Check for HTTP errors
+    response.raise_for_status()
 
-    # Iterate over the streaming response
-    for line in response.iter_lines():
-        if line:
-            # Parse the JSON line
-            json_line = json.loads(line)
-            # Extract the assistant's response
-            assistant_response = json_line['message']['content']
-            
-            # Ensure the assistant's response is properly formatted
-            assistant_response = assistant_response.strip()
+    # Parse the JSON response
+    response_data = response.json()
 
-            response_data += assistant_response + " "
+    # Extract the assistant's response
+    if 'response' in response_data:
+        assistant_response = response_data['response']
+    else:
+        assistant_response = "Sorry, I couldn't understand the response."
 
-            # Check if it's the final response
-            if json_line.get("done"):
-                break
-
-    return response_data.strip()
+    return assistant_response.strip()
 
 def text_to_speech(text):
     # Initialize the TTS engine
     engine = pyttsx3.init()
     # Convert text to speech
     engine.say(text)
-
     # Wait for the speech to finish
     engine.runAndWait()
 
-def get_female_voice(engine):
-    # Get all available voices
-    voices = engine.getProperty('voices')
+def print_banner():
+    sheep = r"""
+         __  _
+    .-:'  `; `-._
+   (_,           )
+ ,'o"(            )>
+(__,-'            )
+   (             )
+    `-'._.--._.-'
+"""
 
-    # Select a female voice
-    female_voice = None
-    for voice in voices:
-        if "female" in voice.name.lower():
-            female_voice = voice
-            break
-
-    return female_voice
+    print(sheep)
 
 def main():
-    print("Ollama Chatbot")
+    print_banner()
+    print("Welcome to Ollama Chatbot")
     print("Type 'exit' to end the conversation.")
 
     while True:
