@@ -15,7 +15,7 @@ Ollama Chatbot is a conversational agent powered by AI that allows users to inte
 
 ### Console Interface
 
-![Console](/assets/console.png)
+![Console](/assets/console.PNG)
 
 ## AI Models
 
