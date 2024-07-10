@@ -4,7 +4,7 @@ from kivy.lang import Builder
 from kivymd.app import MDApp
 import requests
 import json
-import pyttsx3
+#import pyttsx3
 
 # Load KivyMD design string
 kv_string = '''
@@ -49,59 +49,40 @@ class ChatApp(MDApp):
       user_input = self.root.ids.prompt_field.text
 
       # Define the endpoint URL
-      url = "http://localhost:11434/api/chat"
+      url = "http://localhost:11434/api/generate"
 
       # Define the payload (data) to be sent in the request
       data = {
-        "model": "llama2-uncensored",
-        "messages": [
-          {"role": "user", "content": user_input}
-        ]
+        "model": "llama2",
+        "prompt": user_input,
+        "stream": False
       }
 
-      # Send the POST request to the API endpoint with streaming enabled
-      response = requests.post(url, json=data, stream=True)
+      # Send the POST request to the API endpoint
+      response = requests.post(url, json=data)
 
-      # Initialize response data
-      response_data = ""
+      # Parse the JSON response
+      response_data = response.json()
 
-      # Iterate over the streaming response
-      for line in response.iter_lines():
-        if line:
-          # Parse the JSON line
-          json_line = json.loads(line)
-          # Extract the assistant's response
-          assistant_response = json_line['message']['content']
+      print(response)
 
-          # Ensure the assistant's response is properly formatted
-          assistant_response = assistant_response.strip()
-
-          response_data += assistant_response + " "
-
-          # Check if it's the final response
-          if json_line.get("done"):
-            break
+      # Extract the assistant's response
+      if 'response' in response_data:
+        assistant_response = response_data['response']
+      else:
+        assistant_response = "Sorry, I couldn't understand the response."
 
       # Callback to update GUI from main thread
       def update_response(response_data):
-        self.root.ids.response_field.text = response_data.strip()
-        Clock.schedule_once(lambda dt: text_to_speech(response_data.strip()), 0)
+        self.root.ids.response_field.text = response_data
 
       # Schedule GUI update on Clock
-      Clock.schedule_once(lambda dt: update_response(response_data), 0)
+      Clock.schedule_once(lambda dt: update_response(assistant_response), 0)
 
     # Start a new thread for message processing
     thread = threading.Thread(target=process_message_in_thread)
     thread.start()
 
-def text_to_speech(text):
-  # Initialize the TTS engine
-  engine = pyttsx3.init()
-  # Convert text to speech
-  engine.say(text)
-
-  # Wait for the speech to finish
-  engine.runAndWait()
-
 if __name__ == "__main__":
   ChatApp().run()
+classcls
